@@ -16,6 +16,7 @@
  *        David S. Miller (davem@caip.rutgers.edu), 1995
  */
 
+
 #include <linux/module.h>
 #include <linux/string.h>
 #include <linux/fs.h>
@@ -5741,12 +5742,12 @@ static inline int ext3_feature_set_ok(struct super_block *sb)
 
 static struct file_system_type ext4_fs_type = {
 	.owner		= THIS_MODULE,
-	.name		= "ext4",
+	.name		= "pengExt4",
 	.mount		= ext4_mount,
 	.kill_sb	= kill_block_super,
 	.fs_flags	= FS_REQUIRES_DEV,
 };
-MODULE_ALIAS_FS("ext4");
+MODULE_ALIAS_FS("pengExt4");
 
 /* Shared across all ext4 file systems */
 wait_queue_head_t ext4__ioend_wq[EXT4_WQ_HASH_SZ];
@@ -5754,7 +5755,7 @@ wait_queue_head_t ext4__ioend_wq[EXT4_WQ_HASH_SZ];
 static int __init ext4_init_fs(void)
 {
 	int i, err;
-
+        pr_debug("ext4_init_fs.\n");
 	ratelimit_state_init(&ext4_mount_msg_ratelimit, 30 * HZ, 64);
 	ext4_li_info = NULL;
 	mutex_init(&ext4_li_mtx);
@@ -5776,11 +5777,14 @@ static int __init ext4_init_fs(void)
 	err = ext4_init_system_zone();
 	if (err)
 		goto out4;
-
+        
+        pr_debug("ext4_init_fs --- enter ext4_init_sysfs().\n");
 	err = ext4_init_sysfs();
-	if (err)
+	if (err) {
+                pr_debug("ext4_init_fs --- err %d in ext4_init_sysfs().\n", err);
 		goto out3;
-
+        }
+        
 	err = ext4_init_mballoc();
 	if (err)
 		goto out2;
