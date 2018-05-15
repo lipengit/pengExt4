@@ -426,7 +426,7 @@ int __init ext4_init_sysfs(void)
 {
 	int ret;
 
-	kobject_set_name(&ext4_kset.kobj, "ext4");
+	kobject_set_name(&ext4_kset.kobj, "pengExt4");
 	ext4_kset.kobj.parent = fs_kobj;
 	ret = kset_register(&ext4_kset);
 	if (ret)
