@@ -334,7 +334,8 @@ static int ext4_dax_pfn_mkwrite(struct vm_fault *vmf)
 	if (vmf->pgoff >= size)
 		ret = VM_FAULT_SIGBUS;
 	else
-		ret = dax_pfn_mkwrite(vmf);
+                ret = VM_FAULT_SIGBUS;
+		// ret = dax_pfn_mkwrite(vmf);
 	up_read(&EXT4_I(inode)->i_mmap_sem);
 	sb_end_pagefault(sb);
 
