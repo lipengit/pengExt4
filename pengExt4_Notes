@@ -1,0 +1,16 @@
+######    EXT4 (pengExt4)    ######
+using sudo insmod pengExt4.ko to load this FS module. 
+using sudo rmmod pengExt4.ko to unload. 
+Check the loaded modules in kernel: lsmod | head -6
+
+===How to format the drive to pengExt4 FS format===
+sudo mkfs.ext4 -b 4096 /dev/nvme1n1 32768
+This will create 32768 4KiB blocks with some inodes (with lost_found folder created.)
+
+
+===To Read an LBA by using NVMe Cli===
+sudo nvme read /dev/nvme1n1 -s 270352 -c 7 -z 4096 -d LBA270352
+
+===How to mount the drive to pengExt2 FS===
+sudo mount -t pengExt4 /dev/nvme1n1 /home/peng/pengExt4Drive/
+
