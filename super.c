@@ -2314,7 +2314,7 @@ static int ext4_check_descriptors(struct super_block *sb,
 
 	for (i = 0; i < sbi->s_groups_count; i++) {
 		struct ext4_group_desc *gdp = ext4_get_group_desc(sb, i, NULL);
-
+                pr_debug("ext4_check_descriptors --- free blocks in group %d: %d.\n", i, gdp->bg_free_blocks_count_lo);
 		if (i == sbi->s_groups_count - 1 || flexbg_flag)
 			last_block = ext4_blocks_count(sbi->s_es) - 1;
 		else
@@ -3415,6 +3415,8 @@ static int ext4_fill_super(struct super_block *sb, void *data, int silent)
 	if (sb->s_bdev->bd_part)
 		sbi->s_sectors_written_start =
 			part_stat_read(sb->s_bdev->bd_part, sectors[1]);
+        
+        //pr_debug("ext4_fill_super.\n");
 
 	/* Cleanup superblock name */
 	strreplace(sb->s_id, '/', '!');
@@ -3938,7 +3940,7 @@ static int ext4_fill_super(struct super_block *sb, void *data, int silent)
 		block = descriptor_loc(sb, logical_sb_block, i);
 		sb_breadahead(sb, block);
 	}
-
+        //pr_debug("ext4_fill_super: db_count %d.\n", db_count);
 	for (i = 0; i < db_count; i++) {
 		block = descriptor_loc(sb, logical_sb_block, i);
 		sbi->s_group_desc[i] = sb_bread_unmovable(sb, block);
